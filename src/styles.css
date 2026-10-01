@@ -1,0 +1,534 @@
+import React, { useMemo, useState } from 'react';
+
+const wines = [
+  {
+    id: 'lafite',
+    name: 'Château Lafite Rothschild',
+    region: 'Bordeaux, France',
+    appellation: 'Pauillac',
+    estateFounded: 1631,
+    cuveeFounded: 1868,
+    ruler: 'Louis XIV / Louis XV era',
+    image:
+      'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?auto=format&fit=crop&w=1200&q=80',
+    labelImage:
+      'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=80',
+    summary:
+      'A symbol of Bordeaux aristocracy, Lafite represents the concentration of power, estate culture, and viticultural prestige in the Médoc.',
+    style: 'Cabernet Sauvignon-led, structured and aristocratic',
+    keyFacts: [
+      'Estate founded in 1631',
+      'Single estate with long Médoc lineage',
+      'Legacy tied to the French monarchy and aristocratic culture'
+    ],
+    timeline: [
+      {
+        year: 1631,
+        category: 'Politics',
+        title: 'The French monarchy consolidates power',
+        description:
+          'The estate’s early period unfolded during the reign of Louis XIII and the consolidation of royal authority across the kingdom.',
+        region: 'France'
+      },
+      {
+        year: 1630,
+        category: 'Geopolitics',
+        title: 'Europe is reshaped by war and trade',
+        description:
+          'The Thirty Years’ War transformed diplomatic alliances, trade routes, and the rise of major European powers with implications for Bordeaux.',
+        region: 'Europe'
+      },
+      {
+        year: 1630,
+        category: 'Arts',
+        title: 'Baroque grandeur takes hold',
+        description:
+          'The aristocratic appetite for spectacle, opulence, and ritual mirrored the cultural prestige of the estate itself.',
+        region: 'France'
+      },
+      {
+        year: 1631,
+        category: 'Music',
+        title: 'The early age of richly ceremonial music',
+        description:
+          'Court music and ceremonial performance became essential language of prestige and social power in France and across Europe.',
+        region: 'Europe'
+      },
+      {
+        year: 1631,
+        category: 'Anomalies',
+        title: 'Climate uncertainty and agrarian stress',
+        description:
+          'Periods of unstable climate and epidemic concern shaped the risk profile of wine estates in the region and world trade.',
+        region: 'Bordeaux'
+      }
+    ]
+  },
+  {
+    id: 'latour',
+    name: 'Château Latour',
+    region: 'Bordeaux, France',
+    appellation: 'Pauillac',
+    estateFounded: 1331,
+    cuveeFounded: 1962,
+    ruler: 'King of France / English influence in Aquitaine',
+    image:
+      'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80',
+    labelImage:
+      'https://images.unsplash.com/photo-1532635241-17e805e2d73b?auto=format&fit=crop&w=900&q=80',
+    summary:
+      'Latour’s story is rooted in medieval landholding, dynastic power, and the long continuity of Bordeaux’s great estates.',
+    style: 'Cabernet-dominant, powerful and mineral',
+    keyFacts: [
+      'Estate holdings trace back to 1331',
+      'Connected to the power structures of medieval Aquitaine',
+      'A benchmark for longevity and structure'
+    ],
+    timeline: [
+      {
+        year: 1331,
+        category: 'Politics',
+        title: 'The English and French struggle for Aquitaine',
+        description:
+          'The region’s politics were shaped by competing crowns, territorial claims, and long-running duels over authority and revenue.',
+        region: 'Aquitaine'
+      },
+      {
+        year: 1331,
+        category: 'Geopolitics',
+        title: 'Regional trade routes are crucial to prospering estates',
+        description:
+          'Merchants, ports, and trade corridors shaped the economic power of medieval Bordeaux and its wine producers.',
+        region: 'Atlantic Europe'
+      },
+      {
+        year: 1331,
+        category: 'Arts',
+        title: 'Gothic patronage and royal ceremony',
+        description:
+          'The early medieval visual culture of courts and churches reflected the prestige systems in which landed estates thrived.',
+        region: 'France'
+      },
+      {
+        year: 1331,
+        category: 'Music',
+        title: 'Courtly music and ceremonial ritual',
+        description:
+          'Music played a major role in aristocratic display, wedding politics, and civic ceremony in the region.',
+        region: 'Western Europe'
+      },
+      {
+        year: 1331,
+        category: 'Anomalies',
+        title: 'Climate volatility and harvest vulnerability',
+        description:
+          'Winegrowing depended on weather rhythm and agricultural stability; variance often determined estate fortunes.',
+        region: 'Bordeaux'
+      }
+    ]
+  },
+  {
+    id: 'margaux',
+    name: 'Château Margaux',
+    region: 'Bordeaux, France',
+    appellation: 'Margaux',
+    estateFounded: 1570,
+    cuveeFounded: 1970,
+    ruler: 'French crown and provincial nobility',
+    image:
+      'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=1200&q=80',
+    labelImage:
+      'https://images.unsplash.com/photo-1547595628-c61a29f496f0?auto=format&fit=crop&w=900&q=80',
+    summary:
+      'Margaux embodies the elegance of Bordeaux estates shaped by aristocratic refinement and the strategic politics of the region.',
+    style: 'Silken, floral, and perfumed',
+    keyFacts: [
+      'Estate traceable to the late Renaissance',
+      'Defined by elegance and social prestige',
+      'Deep root in the cultural network of western France'
+    ],
+    timeline: [
+      {
+        year: 1570,
+        category: 'Politics',
+        title: 'The late Renaissance court culture',
+        description:
+          'French nobility expanded its social prestige through land ownership, symbolic power, and strategic alliances.',
+        region: 'France'
+      },
+      {
+        year: 1570,
+        category: 'Geopolitics',
+        title: 'A Europe of dynasties and rival courts',
+        description:
+          'The political architecture of Europe was defined by dynastic conflict, maritime expansion, and shifting trade patterns.',
+        region: 'Europe'
+      },
+      {
+        year: 1570,
+        category: 'Arts',
+        title: 'Renaissance elegance meets aristocratic display',
+        description:
+          'The culture of the French nobility valued beauty, restraint, and cultivated pleasure—all values reflected in the estate mythos.',
+        region: 'France'
+      },
+      {
+        year: 1570,
+        category: 'Music',
+        title: 'The rise of expressive musical culture',
+        description:
+          'Music remained central to aristocratic life, celebrations, and the public performance of status.',
+        region: 'Europe'
+      },
+      {
+        year: 1570,
+        category: 'Anomalies',
+        title: 'Disease, scarcity, and agricultural risk',
+        description:
+          'Public health and agrarian stress influenced not only harvests but also the long-term strategic planning of estates',
+        region: 'Bordeaux'
+      }
+    ]
+  },
+  {
+    id: 'haut-brion',
+    name: 'Château Haut-Brion',
+    region: 'Bordeaux, France',
+    appellation: 'Pessac-Léognan',
+    estateFounded: 1521,
+    cuveeFounded: 1935,
+    ruler: 'French crown and regional elites',
+    image:
+      'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80',
+    labelImage:
+      'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?auto=format&fit=crop&w=900&q=80',
+    summary:
+      'One of the oldest and most influential estates in Bordeaux, Haut-Brion reflects the longue durée of wine, diplomacy, and regional prestige.',
+    style: 'Merlot-led, earthy and refined',
+    keyFacts: [
+      'Founded in the early 16th century',
+      'A cornerstone of Bordeaux prestige',
+      'Connected to wider European elite networks'
+    ],
+    timeline: [
+      {
+        year: 1521,
+        category: 'Politics',
+        title: 'French regional governance and noble patronage',
+        description:
+          'The estate emerged in a landscape shaped by local lords, royal administration, and emerging state power.',
+        region: 'France'
+      },
+      {
+        year: 1521,
+        category: 'Geopolitics',
+        title: 'The Atlantic world opens wider',
+        description:
+          'Trade and mobility across the Atlantic made Bordeaux more connected to global markets and overseas ambitions.',
+        region: 'Atlantic Europe'
+      },
+      {
+        year: 1521,
+        category: 'Arts',
+        title: 'Renaissance humanism and patrimonial culture',
+        description:
+          'The visual and intellectual culture of the Renaissance valued cultivation, archives, and the symbolic importance of place.',
+        region: 'France'
+      },
+      {
+        year: 1521,
+        category: 'Music',
+        title: 'A culture of ceremony and courtly performance',
+        description:
+          'Music remained indispensable in public display, ritual, and the performance of status across the aristocracy.',
+        region: 'Europe'
+      },
+      {
+        year: 1521,
+        category: 'Anomalies',
+        title: 'Harvest vulnerability and shifting climate patterns',
+        description:
+          'The variability of climate and agricultural health often had direct implications for estate continuity and commercial reputation.',
+        region: 'Bordeaux'
+      }
+    ]
+  },
+  {
+    id: 'mouton',
+    name: 'Château Mouton Rothschild',
+    region: 'Bordeaux, France',
+    appellation: 'Pauillac',
+    estateFounded: 1853,
+    cuveeFounded: 1924,
+    ruler: 'Napoleon III era and Second Empire',
+    image:
+      'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=80',
+    labelImage:
+      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80',
+    summary:
+      'Mouton’s modern prestige was built during a period of political transformation, industrial expansion, and emerging luxury culture.',
+    style: 'Cabernet-driven, opulent and expressive',
+    keyFacts: [
+      'Estate established in the 19th century',
+      'Linked to the Second Empire and modern luxury markets',
+      'Defined by ambition, visibility, and cultural branding'
+    ],
+    timeline: [
+      {
+        year: 1853,
+        category: 'Politics',
+        title: 'The Second Empire reshapes France',
+        description:
+          'Napoleon III’s regime encouraged modernization, urban expansion, and a new confidence in prestige and commerce.',
+        region: 'France'
+      },
+      {
+        year: 1853,
+        category: 'Geopolitics',
+        title: 'Global trade and imperial networks expand',
+        description:
+          'Industrial shipping and imperial markets increased demand for luxury goods and shaped Bordeaux’s export ambitions.',
+        region: 'Europe'
+      },
+      {
+        year: 1853,
+        category: 'Arts',
+        title: 'The Romantic era and luxury visual culture',
+        description:
+          'Art and aesthetics increasingly became vehicles for cultivating social status, prestige, and identity.',
+        region: 'France'
+      },
+      {
+        year: 1853,
+        category: 'Music',
+        title: 'Romanticism reaches its zenith',
+        description:
+          'The romantic culture of emotion, drama, and spectacle resonates with luxury wine branding and estate mythmaking.',
+        region: 'Europe'
+      },
+      {
+        year: 1853,
+        category: 'Anomalies',
+        title: 'Industrial change and environmental adaptation',
+        description:
+          'The nineteenth century brought monumental transformation to both land use and agricultural practice across Europe.',
+        region: 'Bordeaux'
+      }
+    ]
+  }
+];
+
+const categoryColors = {
+  All: '#d9c18b',
+  Politics: '#d98372',
+  Geopolitics: '#7ec8ff',
+  Arts: '#f7b267',
+  Music: '#b8d4a8',
+  Anomalies: '#cbbef3'
+};
+
+function App() {
+  const [search, setSearch] = useState('');
+  const [selectedWineId, setSelectedWineId] = useState('lafite');
+  const [savedIds, setSavedIds] = useState(['lafite']);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const filteredWines = useMemo(() => {
+    const lower = search.trim().toLowerCase();
+    if (!lower) return wines;
+    return wines.filter((wine) =>
+      `${wine.name} ${wine.region} ${wine.appellation} ${wine.summary}`
+        .toLowerCase()
+        .includes(lower)
+    );
+  }, [search]);
+
+  const selectedWine =
+    filteredWines.find((wine) => wine.id === selectedWineId) ||
+    wines.find((wine) => wine.id === selectedWineId) ||
+    wines[0];
+
+  const timeline = selectedWine.timeline.filter(
+    (event) => selectedCategory === 'All' || event.category === selectedCategory
+  );
+
+  function toggleSaved(id) {
+    setSavedIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
+  }
+
+  return (
+    <div className="app-shell">
+      <header className="topbar">
+        <div className="brand-block">
+          <div className="brand-mark">H</div>
+          <div>
+            <div className="eyebrow">Heritage Sommelier</div>
+            <h1>Historic context for every estate</h1>
+          </div>
+        </div>
+        <div className="topbar-actions">
+          <button className="ghost-button">Saved wines ({savedIds.length})</button>
+          <button className="primary-button">New search</button>
+        </div>
+      </header>
+
+      <main className="main-layout">
+        <aside className="sidebar">
+          <div className="search-box">
+            <label htmlFor="wine-search">Search wines</label>
+            <input
+              id="wine-search"
+              type="text"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search Lafite, Pauillac, Bordeaux..."
+            />
+          </div>
+
+          <div className="results-header">
+            <span>Wines</span>
+            <strong>{filteredWines.length}</strong>
+          </div>
+
+          <div className="wine-list">
+            {filteredWines.map((wine) => (
+              <button
+                key={wine.id}
+                type="button"
+                className={`wine-card ${selectedWine.id === wine.id ? 'selected' : ''}`}
+                onClick={() => setSelectedWineId(wine.id)}
+              >
+                <img src={wine.image} alt={wine.name} />
+                <div className="wine-card-copy">
+                  <div className="wine-title-row">
+                    <h3>{wine.name}</h3>
+                    <span className="bookmarked-dot">
+                      {savedIds.includes(wine.id) ? '★' : '☆'}
+                    </span>
+                  </div>
+                  <p>{wine.appellation}</p>
+                  <small>{wine.region}</small>
+                </div>
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        <section className="detail-panel">
+          <div className="hero-card">
+            <div className="hero-image-wrap">
+              <img src={selectedWine.image} alt={selectedWine.name} />
+            </div>
+
+            <div className="hero-copy">
+              <div className="tag-row">
+                <span className="tag">First Growth</span>
+                <span className="tag muted">{selectedWine.appellation}</span>
+              </div>
+
+              <div className="title-row">
+                <h2>{selectedWine.name}</h2>
+                <button
+                  type="button"
+                  className={`save-button ${savedIds.includes(selectedWine.id) ? 'active' : ''}`}
+                  onClick={() => toggleSaved(selectedWine.id)}
+                >
+                  {savedIds.includes(selectedWine.id) ? 'Saved' : 'Save wine'}
+                </button>
+              </div>
+
+              <p className="subtitle">{selectedWine.summary}</p>
+
+              <div className="meta-grid">
+                <div>
+                  <label>Estate founded</label>
+                  <strong>{selectedWine.estateFounded}</strong>
+                </div>
+                <div>
+                  <label>Cuvée founded</label>
+                  <strong>{selectedWine.cuveeFounded}</strong>
+                </div>
+                <div>
+                  <label>Ruler in era</label>
+                  <strong>{selectedWine.ruler}</strong>
+                </div>
+                <div>
+                  <label>Style</label>
+                  <strong>{selectedWine.style}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="content-grid">
+            <div className="timeline-panel">
+              <div className="panel-header">
+                <div>
+                  <div className="eyebrow">Historical context</div>
+                  <h3>World and regional timeline</h3>
+                </div>
+                <div className="filter-row">
+                  {['All', 'Politics', 'Geopolitics', 'Arts', 'Music', 'Anomalies'].map((filter) => (
+                    <button
+                      key={filter}
+                      type="button"
+                      className={`filter-button ${selectedCategory === filter ? 'active' : ''}`}
+                      onClick={() => setSelectedCategory(filter)}
+                      style={{
+                        background:
+                          selectedCategory === filter ? categoryColors[filter] : 'rgba(255,255,255,0.05)',
+                        color: selectedCategory === filter ? '#18202d' : '#e8e3d8'
+                      }}
+                    >
+                      {filter}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="timeline-list">
+                {timeline.map((event) => (
+                  <article key={`${event.year}-${event.title}`} className="timeline-item">
+                    <div className="timeline-dot" style={{ background: categoryColors[event.category] }} />
+                    <div className="timeline-content">
+                      <div className="date-badge">{event.year}</div>
+                      <span className="event-category">{event.category}</span>
+                      <h4>{event.title}</h4>
+                      <p>{event.description}</p>
+                      <small>{event.region}</small>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="insight-panel">
+              <div className="panel-header compact">
+                <div className="eyebrow">Sommelier insight</div>
+                <h3>Story to share with the patron</h3>
+              </div>
+
+              <div className="quote-box">
+                “This wine reflects not only a vineyard, but the political, artistic, and cultural climate of the era in which the estate and its identity were formed.”
+              </div>
+
+              <ul className="fact-list">
+                {selectedWine.keyFacts.map((fact) => (
+                  <li key={fact}>{fact}</li>
+                ))}
+              </ul>
+
+              <div className="mini-visual">
+                <img src={selectedWine.labelImage} alt={`${selectedWine.name} label`} />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default App;
